@@ -1,6 +1,6 @@
 # ScholarFlow
 
-ScholarFlow is an AI-powered knowledge workspace that helps students, researchers, and lifelong learners organize, understand, and interact with their knowledge. Upload documents, presentations, images, audio, and video, then chat with your content using Retrieval-Augmented Generation (RAG), generate study materials, and manage your learning from a single workspace. The project's vision and planned architecture are described in the accompanying design document. :contentReference[oaicite:0]{index=0}
+ScholarFlow is an AI-powered knowledge workspace that helps students, researchers, and lifelong learners organize, understand, and interact with their knowledge. Upload documents, presentations, images, audio, and video, then chat with your content using Retrieval-Augmented Generation (RAG), generate study materials, and manage your learning from a single workspace. The project's vision and planned architecture are described in the accompanying design document. 
 
 ---
 
@@ -14,11 +14,10 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 - Flashcard generation
 - Quiz generation
 - Semantic search
-- Kanban task management
 - To-do management
 - Study calendar
 - Workspace management
-- Dark-first user interface
+
 
 ---
 
