@@ -76,9 +76,9 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 
 ---
 
-System Architecture
+# 6. Overall System Architecture
 
-
+```text
                        ┌────────────────────┐
                        │      Next.js       │
                        │      React UI      │
@@ -105,8 +105,7 @@ Supabase Storage ────────────────┘
       ▼
 Document Processing
 (PDF.js, OCR, Whisper, Unstructured)
-
----
+```
 
 ## Roadmap
 
