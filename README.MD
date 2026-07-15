@@ -76,20 +76,35 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 
 ---
 
-## Project Structure
+System Architecture
 
-```
-ScholarFlow/
-├── app/
-├── components/
-├── lib/
-├── hooks/
-├── actions/
-├── types/
-├── public/
-├── styles/
-└── ...
-```
+
+                       ┌────────────────────┐
+                       │      Next.js       │
+                       │      React UI      │
+                       └─────────┬──────────┘
+                                 │
+                ┌────────────────┼────────────────┐
+                │                │                │
+                ▼                ▼                ▼
+             Clerk          Server Actions    TipTap Editor
+                │                │
+                ▼                ▼
+        User Authentication   AI Backend
+                                 │
+      ┌──────────────────────────┼───────────────────────────┐
+      │                          │                           │
+      ▼                          ▼                           ▼
+ Supabase DB              Pinecone Vector DB          OpenAI Models
+(PostgreSQL)                  (Embeddings)       GPT-4o + GPT-4.1 Mini
+      │                          ▲
+      │                          │
+      ▼                          │
+Supabase Storage ────────────────┘
+      │
+      ▼
+Document Processing
+(PDF.js, OCR, Whisper, Unstructured)
 
 ---
 
