@@ -1,6 +1,6 @@
 # ScholarFlow
 
-ScholarFlow is an AI-powered knowledge workspace that helps students, researchers, and lifelong learners organize, understand, and interact with their knowledge. Upload documents, presentations, images, audio, and video, then chat with your content using Retrieval-Augmented Generation (RAG), generate study materials, and manage your learning from a single workspace. The project's vision and planned architecture are described in the accompanying design document. :contentReference[oaicite:0]{index=0}
+ScholarFlow is an AI-powered knowledge workspace that helps students, researchers, and lifelong learners organize, understand, and interact with their knowledge. Upload documents, presentations, images, audio, and video, then chat with your content using Retrieval-Augmented Generation (RAG), generate study materials, and manage your learning from a single workspace. The project's vision and planned architecture are described in the accompanying design document. 
 
 ---
 
@@ -14,11 +14,9 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 - Flashcard generation
 - Quiz generation
 - Semantic search
-- Kanban task management
 - To-do management
-- Study calendar
 - Workspace management
-- Dark-first user interface
+
 
 ---
 
@@ -36,7 +34,6 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 ### Backend
 
 - Next.js Server Actions
-- Supabase
 - PostgreSQL
 
 ### Authentication
@@ -77,22 +74,36 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 
 ---
 
-## Project Structure
+# 6. Overall System Architecture
 
+```text
+                       ┌────────────────────┐
+                       │      Next.js       │
+                       │      React UI      │
+                       └─────────┬──────────┘
+                                 │
+                ┌────────────────┼────────────────┐
+                │                │                │
+                ▼                ▼                ▼
+             Clerk          Server Actions    TipTap Editor
+                │                │
+                ▼                ▼
+        User Authentication   AI Backend
+                                 │
+      ┌──────────────────────────┼───────────────────────────┐
+      │                          │                           │
+      ▼                          ▼                           ▼
+    (PostgreSQL)              Pinecone Vector DB          OpenAI Models
+                 (Embeddings)       GPT-4o + GPT-4.1 Mini
+      │                          ▲
+      │                          │
+      ▼                          │
+Supabase Storage ────────────────┘
+      │
+      ▼
+Document Processing
+(PDF.js, OCR, Whisper, Unstructured)
 ```
-ScholarFlow/
-├── app/
-├── components/
-├── lib/
-├── hooks/
-├── actions/
-├── types/
-├── public/
-├── styles/
-└── ...
-```
-
----
 
 ## Roadmap
 
