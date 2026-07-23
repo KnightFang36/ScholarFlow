@@ -15,7 +15,6 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 - Quiz generation
 - Semantic search
 - To-do management
-- Study calendar
 - Workspace management
 
 
@@ -35,7 +34,6 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
 ### Backend
 
 - Next.js Server Actions
-- Supabase
 - PostgreSQL
 
 ### Authentication
@@ -95,8 +93,8 @@ ScholarFlow is an AI-powered knowledge workspace that helps students, researcher
       ┌──────────────────────────┼───────────────────────────┐
       │                          │                           │
       ▼                          ▼                           ▼
- Supabase DB              Pinecone Vector DB          OpenAI Models
-(PostgreSQL)                  (Embeddings)       GPT-4o + GPT-4.1 Mini
+    (PostgreSQL)              Pinecone Vector DB          OpenAI Models
+                 (Embeddings)       GPT-4o + GPT-4.1 Mini
       │                          ▲
       │                          │
       ▼                          │
