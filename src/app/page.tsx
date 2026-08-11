@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
+import LandingHero from '@/components/landing-hero'
 
-export default function RootPage() {
-  redirect('/dashboard')
+export default function HomePage() {
+  return <LandingHero />
 }
