@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import Threads from '@/components/threads'
 
 interface Ripple {
   id: number
@@ -23,6 +24,7 @@ export default function LandingHero() {
   })
   const [ripples, setRipples] = useState<Ripple[]>([])
   const [scrolled, setScrolled] = useState(false)
+  const [showThreads, setShowThreads] = useState(false)
   const floatingElementsRef = useRef<Element[]>([])
 
   // Word entrance animation
@@ -37,6 +39,22 @@ export default function LandingHero() {
       })
     }
     const timeoutId = setTimeout(animateWords, 500)
+    return () => clearTimeout(timeoutId)
+  }, [])
+
+  // Reveal the Threads background only after the intro text has fully animated in
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setShowThreads(true), 4200)
+    return () => clearTimeout(timeoutId)
+  }, [])
+
+  // Start the metallic shine sweep on the headline once its words have fully appeared
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      document.querySelectorAll<HTMLElement>('.shiny-text').forEach((el) => {
+        el.classList.add('shine-active')
+      })
+    }, 2200)
     return () => clearTimeout(timeoutId)
   }, [])
 
@@ -76,7 +94,7 @@ export default function LandingHero() {
     const wordElements = document.querySelectorAll<HTMLElement>('.word-animate')
     const handleMouseEnter = (e: Event) => {
       const target = e.target as HTMLElement
-      if (target) target.style.textShadow = '0 0 20px rgba(203, 213, 225, 0.5)'
+      if (target) target.style.textShadow = '0 0 24px rgba(255, 255, 255, 0.7)'
     }
     const handleMouseLeave = (e: Event) => {
       const target = e.target as HTMLElement
@@ -126,31 +144,65 @@ export default function LandingHero() {
       position: fixed;
       pointer-events: none;
       border-radius: 9999px;
-      background-image: radial-gradient(circle, rgba(168, 130, 255, 0.06), rgba(120, 90, 200, 0.05), transparent 70%);
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03), transparent 70%);
       transform: translate(-50%, -50%);
       will-change: left, top, opacity;
       transition: left 70ms linear, top 70ms linear, opacity 300ms ease-out;
+      z-index: 5;
+    }
+    .threads-layer {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 2.5s ease-out;
+      z-index: 0;
+    }
+    .threads-layer.threads-visible {
+      opacity: 0.55;
     }
     @keyframes word-appear { 0% { opacity: 0; transform: translateY(30px) scale(0.8); filter: blur(10px); } 50% { opacity: 0.8; transform: translateY(10px) scale(0.95); filter: blur(2px); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
-    @keyframes grid-draw { 0% { stroke-dashoffset: 1000; opacity: 0; } 50% { opacity: 0.3; } 100% { stroke-dashoffset: 0; opacity: 0.15; } }
+    @keyframes grid-draw { 0% { stroke-dashoffset: 1000; opacity: 0; } 50% { opacity: 0.3; } 100% { stroke-dashoffset: 0; opacity: 0.12; } }
     @keyframes pulse-glow { 0%, 100% { opacity: 0.1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.1); } }
+    @keyframes shine-sweep { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
     .word-animate { display: inline-block; opacity: 0; margin: 0 0.15em; transition: color 0.3s ease, transform 0.3s ease; }
-    .word-animate:hover { color: oklch(0.85 0.05 280); transform: translateY(-2px); }
-    .grid-line { stroke: oklch(0.55 0.02 264); stroke-width: 0.5; opacity: 0; stroke-dasharray: 5 5; stroke-dashoffset: 1000; animation: grid-draw 2s ease-out forwards; }
-    .detail-dot { fill: oklch(0.7 0.05 280); opacity: 0; animation: pulse-glow 3s ease-in-out infinite; }
-    .corner-element-animate { position: absolute; width: 40px; height: 40px; border: 1px solid oklch(0.7 0.05 280 / 20%); opacity: 0; animation: word-appear 1s ease-out forwards; }
+    .word-animate:hover { transform: translateY(-2px); }
+    .shiny-text {
+      background-image: linear-gradient(
+        100deg,
+        oklch(0.6 0 0) 0%,
+        oklch(0.6 0 0) 40%,
+        oklch(1 0 0) 50%,
+        oklch(0.6 0 0) 60%,
+        oklch(0.6 0 0) 100%
+      );
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine-sweep 5s linear infinite;
+      animation-play-state: paused;
+    }
+    .shiny-text.shine-active { animation-play-state: running; }
+    .grid-line { stroke: oklch(1 0 0 / 12%); stroke-width: 0.5; opacity: 0; stroke-dasharray: 5 5; stroke-dashoffset: 1000; animation: grid-draw 2s ease-out forwards; }
+    .detail-dot { fill: oklch(1 0 0 / 40%); opacity: 0; animation: pulse-glow 3s ease-in-out infinite; }
+    .corner-element-animate { position: absolute; width: 40px; height: 40px; border: 1px solid oklch(1 0 0 / 14%); opacity: 0; animation: word-appear 1s ease-out forwards; }
     .text-decoration-animate { position: relative; }
-    .text-decoration-animate::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, transparent, oklch(0.65 0.15 280), transparent); animation: underline-grow 2s ease-out forwards; animation-delay: 2s; }
+    .text-decoration-animate::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, transparent, oklch(1 0 0 / 60%), transparent); animation: underline-grow 2s ease-out forwards; animation-delay: 2s; }
     @keyframes underline-grow { to { width: 100%; } }
-    .floating-element-animate { position: absolute; width: 2px; height: 2px; background: oklch(0.7 0.1 280); border-radius: 50%; opacity: 0; animation: float 4s ease-in-out infinite; animation-play-state: paused; }
+    .floating-element-animate { position: absolute; width: 2px; height: 2px; background: oklch(1 0 0 / 60%); border-radius: 50%; opacity: 0; animation: float 4s ease-in-out infinite; animation-play-state: paused; }
     @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; } 25% { transform: translateY(-10px) translateX(5px); opacity: 0.6; } 50% { transform: translateY(-5px) translateX(-3px); opacity: 0.4; } 75% { transform: translateY(-15px) translateX(7px); opacity: 0.8; } }
-    .ripple-effect { position: fixed; width: 4px; height: 4px; background: oklch(0.7 0.1 280 / 60%); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; animation: pulse-glow 1s ease-out forwards; z-index: 9999; }
+    .ripple-effect { position: fixed; width: 4px; height: 4px; background: oklch(1 0 0 / 70%); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; animation: pulse-glow 1s ease-out forwards; z-index: 9999; }
   `
 
   return (
     <>
       <style>{pageStyles}</style>
       <div className="min-h-screen bg-background text-foreground font-sans overflow-hidden relative">
+
+        {/* Threads WebGL background — fades in once the headline finishes animating */}
+        <div className={`threads-layer ${showThreads ? 'threads-visible' : ''}`}>
+          <Threads color={[1, 1, 1]} amplitude={1.2} distance={0.2} enableMouseInteraction />
+        </div>
 
         {/* Decorative grid background */}
         <svg
@@ -160,7 +212,7 @@ export default function LandingHero() {
         >
           <defs>
             <pattern id="scholarflow-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="oklch(0.5 0.02 264 / 8%)" strokeWidth="0.5" />
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="oklch(1 0 0 / 5%)" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#scholarflow-grid)" />
@@ -200,7 +252,7 @@ export default function LandingHero() {
         {/* Top nav */}
         <nav className="relative z-10 flex items-center justify-between px-6 py-6 sm:px-8 md:px-12">
           <span className="text-sm font-mono font-semibold tracking-tight text-foreground">
-            Scholar<span className="text-primary">Flow</span>
+            Scholar<span className="text-muted-foreground">Flow</span>
           </span>
           <div className="flex items-center gap-3">
             <Link
@@ -211,7 +263,7 @@ export default function LandingHero() {
             </Link>
             <Link
               href="/sign-up"
-              className="text-xs sm:text-sm font-mono px-4 py-2 rounded-md border border-border text-foreground hover:border-primary hover:text-primary transition-colors"
+              className="text-xs sm:text-sm font-mono px-4 py-2 rounded-md border border-border text-foreground hover:border-foreground/40 transition-colors"
             >
               Get started
             </Link>
@@ -233,18 +285,18 @@ export default function LandingHero() {
           </div>
 
           <div className="text-center max-w-5xl mx-auto relative">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight text-foreground text-decoration-animate text-balance">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight text-decoration-animate text-balance">
               <div className="mb-4 md:mb-6">
-                <span className="word-animate" data-delay="700">
+                <span className="word-animate shiny-text" data-delay="700">
                   Think
                 </span>
-                <span className="word-animate" data-delay="850">
+                <span className="word-animate shiny-text" data-delay="850">
                   deeper,
                 </span>
-                <span className="word-animate" data-delay="1000">
+                <span className="word-animate shiny-text" data-delay="1000">
                   study
                 </span>
-                <span className="word-animate" data-delay="1150">
+                <span className="word-animate shiny-text" data-delay="1150">
                   smarter,
                 </span>
               </div>
@@ -280,6 +332,19 @@ export default function LandingHero() {
               className="absolute -right-6 sm:-right-8 top-1/2 -translate-y-1/2 w-3 sm:w-4 h-px bg-border opacity-0"
               style={{ animation: 'word-appear 1s ease-out forwards', animationDelay: '3.4s' }}
             />
+
+            {/* Start your workspace — centered directly beneath the headline */}
+            <div
+              className="mt-10 opacity-0"
+              style={{ animation: 'word-appear 1s ease-out forwards', animationDelay: '4s' }}
+            >
+              <Link
+                href="/sign-up"
+                className="inline-flex items-center gap-2 text-sm font-mono px-6 py-3 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                Start your workspace
+              </Link>
+            </div>
           </div>
 
           <div className="text-center">
@@ -295,18 +360,6 @@ export default function LandingHero() {
                 understand.
               </span>
             </h2>
-
-            <div
-              className="mt-8 opacity-0"
-              style={{ animation: 'word-appear 1s ease-out forwards', animationDelay: '4s' }}
-            >
-              <Link
-                href="/sign-up"
-                className="inline-flex items-center gap-2 text-sm font-mono px-6 py-3 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
-              >
-                Start your workspace
-              </Link>
-            </div>
           </div>
         </div>
 
