@@ -1,21 +1,14 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
-import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-})
+const inter = Inter({ subsets: ['latin'] })
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'ScholarFlow — AI Knowledge Workspace',
-  description: 'Your AI-powered knowledge workspace for smarter studying.',
+  description: 'Think deeper, study smarter, with an AI workspace built for scholars.',
+  generator: 'v0.app',
 }
 
 export const viewport: Viewport = {
@@ -23,14 +16,16 @@ export const viewport: Viewport = {
   themeColor: '#0d0d14',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <ClerkProvider>
-      <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
-        <body className="bg-background font-sans antialiased">
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" className="bg-background">
+      <body className={`${inter.className} antialiased`}>
+        {children}
+      </body>
+    </html>
   )
 }

@@ -5,7 +5,9 @@
   overflow: hidden;
 }
 
-
+/* The canvas must never influence the container's own size — otherwise
+   ResizeObserver -> renderer.setSize -> canvas resize -> ResizeObserver
+   becomes an infinite feedback loop that hangs the tab. */
 .threads-container canvas {
   position: absolute;
   inset: 0;
