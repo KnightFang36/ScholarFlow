@@ -26,9 +26,9 @@ uniform vec2 uMouse;
 
 #define PI 3.1415926538
 
-const int u_line_count = 40;
-const float u_line_width = 7.0;
-const float u_line_blur = 10.0;
+const int u_line_count = 70;
+const float u_line_width = 9.0;
+const float u_line_blur = 2.0;
 
 float Perlin2D(vec2 P) {
     vec2 Pi = floor(P);
@@ -88,7 +88,7 @@ float lineFn(vec2 st, float width, float perc, float offset, vec2 mouse, float t
     );
 
     return clamp(
-        (line_start - line_end) * (1.0 - smoothstep(0.0, 1.0, pow(perc, 0.3))),
+        (line_start - line_end) * (1.0 -  smoothstep(0.0, 1.0, pow(perc, 0.3))),
         0.0,
         1.0
     );
@@ -206,7 +206,7 @@ export default function Threads({
     // its cost scales with the number of rendered pixels. Cap the internal render
     // resolution to keep large / high-DPI screens smooth; the effect is soft
     // enough that the downscale is imperceptible.
-    const MAX_RENDER_DIM = 900
+    const MAX_RENDER_DIM = 1400
 
     function resize() {
       const clientWidth = containerEl.clientWidth
