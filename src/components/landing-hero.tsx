@@ -1,90 +1,96 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
-import Threads from '@/components/threads'
-import LightRays from '@/components/light-rays'
-import SplashCursor from '@/components/splash-cursor'
-import Navbar from '@/components/navbar'
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import Threads from "@/components/threads";
+import LightRays from "@/components/light-rays";
+import SplashCursor from "@/components/splash-cursor";
+import Navbar from "@/components/navbar";
 
 interface Ripple {
-  id: number
-  x: number
-  y: number
+  id: number;
+  x: number;
+  y: number;
 }
 
 export default function LandingHero() {
-  const [ripples, setRipples] = useState<Ripple[]>([])
-  const [scrolled, setScrolled] = useState(false)
-  const [showThreads, setShowThreads] = useState(false)
-  const floatingElementsRef = useRef<Element[]>([])
+  const [ripples, setRipples] = useState<Ripple[]>([]);
+  const [scrolled, setScrolled] = useState(false);
+  const [showThreads, setShowThreads] = useState(false);
+  const floatingElementsRef = useRef<Element[]>([]);
 
   // Word entrance animation
   useEffect(() => {
     const animateWords = () => {
-      const wordElements = document.querySelectorAll<HTMLElement>('.word-animate')
+      const wordElements =
+        document.querySelectorAll<HTMLElement>(".word-animate");
       wordElements.forEach((word) => {
-        const delay = Number.parseInt(word.getAttribute('data-delay') || '0', 10) || 0
+        const delay =
+          Number.parseInt(word.getAttribute("data-delay") || "0", 10) || 0;
         setTimeout(() => {
-          if (word) word.style.animation = 'word-appear 0.8s ease-out forwards'
-        }, delay)
-      })
-    }
-    const timeoutId = setTimeout(animateWords, 500)
-    return () => clearTimeout(timeoutId)
-  }, [])
+          if (word) word.style.animation = "word-appear 0.8s ease-out forwards";
+        }, delay);
+      });
+    };
+    const timeoutId = setTimeout(animateWords, 500);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   // Reveal the Threads background only after the intro text has fully animated in
   useEffect(() => {
-    const timeoutId = setTimeout(() => setShowThreads(true), 4200)
-    return () => clearTimeout(timeoutId)
-  }, [])
+    const timeoutId = setTimeout(() => setShowThreads(true), 4200);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   // Start the metallic shine sweep on the headline once its words have fully appeared
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      document.querySelectorAll<HTMLElement>('.shiny-text').forEach((el) => {
-        el.classList.add('shine-active')
-      })
-    }, 2200)
-    return () => clearTimeout(timeoutId)
-  }, [])
+      document.querySelectorAll<HTMLElement>(".shiny-text").forEach((el) => {
+        el.classList.add("shine-active");
+      });
+    }, 2200);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   // Click ripple effect
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      const newRipple: Ripple = { id: Date.now(), x: e.clientX, y: e.clientY }
-      setRipples((prev) => [...prev, newRipple])
-      setTimeout(() => setRipples((prev) => prev.filter((r) => r.id !== newRipple.id)), 1000)
-    }
-    document.addEventListener('click', handleClick)
-    return () => document.removeEventListener('click', handleClick)
-  }, [])
+      const newRipple: Ripple = { id: Date.now(), x: e.clientX, y: e.clientY };
+      setRipples((prev) => [...prev, newRipple]);
+      setTimeout(
+        () => setRipples((prev) => prev.filter((r) => r.id !== newRipple.id)),
+        1000,
+      );
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
 
   // Floating particles — start on first scroll
   useEffect(() => {
-    const elements = document.querySelectorAll('.floating-element-animate')
-    floatingElementsRef.current = Array.from(elements)
+    const elements = document.querySelectorAll(".floating-element-animate");
+    floatingElementsRef.current = Array.from(elements);
     const handleScroll = () => {
       if (!scrolled) {
-        setScrolled(true)
+        setScrolled(true);
         floatingElementsRef.current.forEach((el, index) => {
-          const htmlEl = el as HTMLElement
+          const htmlEl = el as HTMLElement;
           setTimeout(
             () => {
               if (htmlEl) {
-                htmlEl.style.animationPlayState = 'running'
-                htmlEl.style.opacity = ''
+                htmlEl.style.animationPlayState = "running";
+                htmlEl.style.opacity = "";
               }
             },
-            Number.parseFloat(htmlEl.style.animationDelay || '0') * 1000 + index * 100
-          )
-        })
+            Number.parseFloat(htmlEl.style.animationDelay || "0") * 1000 +
+              index * 100,
+          );
+        });
       }
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [scrolled])
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [scrolled]);
 
   const pageStyles = `
     .threads-band {
@@ -179,7 +185,7 @@ export default function LandingHero() {
     .workspace-btn {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-  `
+  `;
 
   return (
     <>
@@ -219,46 +225,153 @@ export default function LandingHero() {
           aria-hidden="true"
         >
           <defs>
-            <pattern id="scholarflow-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="oklch(1 0 0 / 5%)" strokeWidth="0.5" />
+            <pattern
+              id="scholarflow-grid"
+              width="60"
+              height="60"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 60 0 L 0 0 0 60"
+                fill="none"
+                stroke="oklch(1 0 0 / 5%)"
+                strokeWidth="0.5"
+              />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#scholarflow-grid)" />
-          <line x1="0" y1="20%" x2="100%" y2="20%" className="grid-line" style={{ animationDelay: '0.5s' }} />
-          <line x1="0" y1="80%" x2="100%" y2="80%" className="grid-line" style={{ animationDelay: '1s' }} />
-          <line x1="20%" y1="0" x2="20%" y2="100%" className="grid-line" style={{ animationDelay: '1.5s' }} />
-          <line x1="80%" y1="0" x2="80%" y2="100%" className="grid-line" style={{ animationDelay: '2s' }} />
-          <line x1="50%" y1="0" x2="50%" y2="100%" className="grid-line" style={{ animationDelay: '2.5s', opacity: 0.05 }} />
-          <line x1="0" y1="50%" x2="100%" y2="50%" className="grid-line" style={{ animationDelay: '3s', opacity: 0.05 }} />
-          <circle cx="20%" cy="20%" r="2" className="detail-dot" style={{ animationDelay: '3s' }} />
-          <circle cx="80%" cy="20%" r="2" className="detail-dot" style={{ animationDelay: '3.2s' }} />
-          <circle cx="20%" cy="80%" r="2" className="detail-dot" style={{ animationDelay: '3.4s' }} />
-          <circle cx="80%" cy="80%" r="2" className="detail-dot" style={{ animationDelay: '3.6s' }} />
-          <circle cx="50%" cy="50%" r="1.5" className="detail-dot" style={{ animationDelay: '4s' }} />
+          <line
+            x1="0"
+            y1="20%"
+            x2="100%"
+            y2="20%"
+            className="grid-line"
+            style={{ animationDelay: "0.5s" }}
+          />
+          <line
+            x1="0"
+            y1="80%"
+            x2="100%"
+            y2="80%"
+            className="grid-line"
+            style={{ animationDelay: "1s" }}
+          />
+          <line
+            x1="20%"
+            y1="0"
+            x2="20%"
+            y2="100%"
+            className="grid-line"
+            style={{ animationDelay: "1.5s" }}
+          />
+          <line
+            x1="80%"
+            y1="0"
+            x2="80%"
+            y2="100%"
+            className="grid-line"
+            style={{ animationDelay: "2s" }}
+          />
+          <line
+            x1="50%"
+            y1="0"
+            x2="50%"
+            y2="100%"
+            className="grid-line"
+            style={{ animationDelay: "2.5s", opacity: 0.05 }}
+          />
+          <line
+            x1="0"
+            y1="50%"
+            x2="100%"
+            y2="50%"
+            className="grid-line"
+            style={{ animationDelay: "3s", opacity: 0.05 }}
+          />
+          <circle
+            cx="20%"
+            cy="20%"
+            r="2"
+            className="detail-dot"
+            style={{ animationDelay: "3s" }}
+          />
+          <circle
+            cx="80%"
+            cy="20%"
+            r="2"
+            className="detail-dot"
+            style={{ animationDelay: "3.2s" }}
+          />
+          <circle
+            cx="20%"
+            cy="80%"
+            r="2"
+            className="detail-dot"
+            style={{ animationDelay: "3.4s" }}
+          />
+          <circle
+            cx="80%"
+            cy="80%"
+            r="2"
+            className="detail-dot"
+            style={{ animationDelay: "3.6s" }}
+          />
+          <circle
+            cx="50%"
+            cy="50%"
+            r="1.5"
+            className="detail-dot"
+            style={{ animationDelay: "4s" }}
+          />
         </svg>
 
         {/* Corner accents */}
-        <div className="corner-element-animate top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8" style={{ animationDelay: '4s' }}>
+        <div
+          className="corner-element-animate top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8"
+          style={{ animationDelay: "4s" }}
+        >
           <div className="absolute top-0 left-0 w-2 h-2 bg-primary opacity-30 rounded-full" />
         </div>
-        <div className="corner-element-animate top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8" style={{ animationDelay: '4.2s' }}>
+        <div
+          className="corner-element-animate top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8"
+          style={{ animationDelay: "4.2s" }}
+        >
           <div className="absolute top-0 right-0 w-2 h-2 bg-primary opacity-30 rounded-full" />
         </div>
-        <div className="corner-element-animate bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8" style={{ animationDelay: '4.4s' }}>
+        <div
+          className="corner-element-animate bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8"
+          style={{ animationDelay: "4.4s" }}
+        >
           <div className="absolute bottom-0 left-0 w-2 h-2 bg-primary opacity-30 rounded-full" />
         </div>
-        <div className="corner-element-animate bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8" style={{ animationDelay: '4.6s' }}>
+        <div
+          className="corner-element-animate bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8"
+          style={{ animationDelay: "4.6s" }}
+        >
           <div className="absolute bottom-0 right-0 w-2 h-2 bg-primary opacity-30 rounded-full" />
         </div>
 
         {/* Floating particles */}
-        <div className="floating-element-animate" style={{ top: '25%', left: '15%', animationDelay: '0.5s' }} />
-        <div className="floating-element-animate" style={{ top: '60%', left: '85%', animationDelay: '1s' }} />
-        <div className="floating-element-animate" style={{ top: '40%', left: '10%', animationDelay: '1.5s' }} />
-        <div className="floating-element-animate" style={{ top: '75%', left: '90%', animationDelay: '2s' }} />
+        <div
+          className="floating-element-animate"
+          style={{ top: "25%", left: "15%", animationDelay: "0.5s" }}
+        />
+        <div
+          className="floating-element-animate"
+          style={{ top: "60%", left: "85%", animationDelay: "1s" }}
+        />
+        <div
+          className="floating-element-animate"
+          style={{ top: "40%", left: "10%", animationDelay: "1.5s" }}
+        />
+        <div
+          className="floating-element-animate"
+          style={{ top: "75%", left: "90%", animationDelay: "2s" }}
+        />
 
         {/* Main content */}
-        <div className="relative z-10 min-h-[calc(100vh-73px)] flex flex-col justify-between items-center px-6 py-10 sm:px-8 sm:py-12 md:px-16 md:py-16">
+        <div className="relative z-10 w-full min-h-[calc(100vh-73px)] flex flex-col justify-between items-center px-6 py-10 sm:px-8 sm:py-12 md:px-16 md:py-16 ">
+          {" "}
           <div className="text-center">
             <h2 className="text-xs sm:text-sm font-mono font-light text-muted-foreground uppercase tracking-[0.2em] opacity-80">
               <span className="word-animate" data-delay="0">
@@ -270,66 +383,83 @@ export default function LandingHero() {
             </h2>
             <div className="mt-4 w-12 sm:w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-60 mx-auto" />
           </div>
-
           <div className="text-center max-w-6xl mx-auto relative">
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.05] tracking-tight text-decoration-animate text-balance">
               <div className="mb-5 md:mb-8">
-                <span className="word-animate shiny-text" data-delay="700">
+                <span className="word-animate shiny-text" data-delay="600">
                   Think
                 </span>
-                <span className="word-animate shiny-text" data-delay="850">
-                  deeper,
+                <span className="word-animate shiny-text" data-delay="700">
+                  Deeper
                 </span>
-                <span className="word-animate shiny-text" data-delay="1000">
-                  study
+                <span className="word-animate shiny-text" data-delay="800">
+                  Study
                 </span>
-                <span className="word-animate shiny-text" data-delay="1150">
-                  smarter,
+                <span className="word-animate shiny-text" data-delay="900">
+                  Smarter
                 </span>
               </div>
               <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-thin text-muted-foreground leading-relaxed tracking-wide">
-                <span className="word-animate" data-delay="1600">
+                <span className="word-animate" data-delay="1000">
                   with
                 </span>
-                <span className="word-animate" data-delay="1750">
+                <span className="word-animate" data-delay="1200">
                   an
                 </span>
-                <span className="word-animate" data-delay="1900">
+                <span className="word-animate" data-delay="1300">
                   AI
                 </span>
-                <span className="word-animate" data-delay="2050">
+                <span className="word-animate" data-delay="1400">
                   workspace
                 </span>
-                <span className="word-animate" data-delay="2200">
+                <span className="word-animate" data-delay="1500">
                   built
                 </span>
-                <span className="word-animate" data-delay="2350">
+                <span className="word-animate" data-delay="1600">
                   for
                 </span>
-                <span className="word-animate" data-delay="2500">
-                  scholars.
+                <span className="word-animate" data-delay="1700">
+                  students
                 </span>
               </div>
             </h1>
             <div
               className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 w-3 sm:w-4 h-px bg-border opacity-0"
-              style={{ animation: 'word-appear 1s ease-out forwards', animationDelay: '3.2s' }}
+              style={{
+                animation: "word-appear 1s ease-out forwards",
+                animationDelay: "3.2s",
+              }}
             />
             <div
               className="absolute -right-6 sm:-right-8 top-1/2 -translate-y-1/2 w-3 sm:w-4 h-px bg-border opacity-0"
-              style={{ animation: 'word-appear 1s ease-out forwards', animationDelay: '3.4s' }}
+              style={{
+                animation: "word-appear 1s ease-out forwards",
+                animationDelay: "3.4s",
+              }}
             />
           </div>
-
-          {/* Threads WebGL band — full viewport width, sits below the headline and above the workspace button, always shining */}
-          <div className={`threads-band w-screen relative left-1/2 -translate-x-1/2 ${showThreads ? 'threads-visible' : ''}`}>
-            <Threads color={[1, 1, 1]} amplitude={1} distance={0} enableMouseInteraction={false} />
+          {/* Threads background — only visible after the headline has fully animated in */}
+          <div
+            className={`threads-band relative w-screen h-40 sm:h-48 md:h-56 ${showThreads ? "threads-visible" : ""}`}
+            style={{
+              marginLeft: "calc(50% - 50vw)",
+              marginRight: "calc(50% - 50vw)",
+            }}
+          >
+            <Threads
+              color={[1, 1, 1]}
+              amplitude={2}
+              distance={0.2}
+              enableMouseInteraction={false}
+            />
           </div>
-
           {/* Start your workspace — centered beneath the headline */}
           <div
             className="text-center opacity-0"
-            style={{ animation: 'word-appear 1s ease-out forwards', animationDelay: '4s' }}
+            style={{
+              animation: "word-appear 1s ease-out forwards",
+              animationDelay: "4s",
+            }}
           >
             <Link
               href="/sign-up"
@@ -339,7 +469,6 @@ export default function LandingHero() {
               <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
-
           <div className="text-center">
             <div className="mb-6 w-12 sm:w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-60 mx-auto" />
             <h2 className="text-xs sm:text-sm font-mono font-light text-muted-foreground uppercase tracking-[0.2em] opacity-80">
@@ -366,5 +495,5 @@ export default function LandingHero() {
         ))}
       </div>
     </>
-  )
+  );
 }

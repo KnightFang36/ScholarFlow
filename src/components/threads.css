@@ -3,6 +3,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
 }
 
 /* The canvas must never influence the container's own size — otherwise
@@ -15,3 +16,5 @@
   width: 100%;
   height: 100%;
 }
+
+
