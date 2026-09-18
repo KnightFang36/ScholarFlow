@@ -458,7 +458,7 @@ export default function LandingHero() {
             className="text-center opacity-0"
             style={{
               animation: "word-appear 1s ease-out forwards",
-              animationDelay: "4s",
+              animationDelay: "2s",
             }}
           >
             <Link
@@ -472,13 +472,13 @@ export default function LandingHero() {
           <div className="text-center">
             <div className="mb-6 w-12 sm:w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-60 mx-auto" />
             <h2 className="text-xs sm:text-sm font-mono font-light text-muted-foreground uppercase tracking-[0.2em] opacity-80">
-              <span className="word-animate" data-delay="3000">
+              <span className="word-animate" data-delay="1900">
                 Upload,
               </span>
-              <span className="word-animate" data-delay="3200">
+              <span className="word-animate" data-delay="2000">
                 ask,
               </span>
-              <span className="word-animate" data-delay="3400">
+              <span className="word-animate" data-delay="2100">
                 understand.
               </span>
             </h2>

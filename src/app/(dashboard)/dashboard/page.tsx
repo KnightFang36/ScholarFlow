@@ -1,4 +1,6 @@
 import { currentUser } from '@clerk/nextjs/server'
+import Link from 'next/link'
+import { ArrowRightIcon } from 'lucide-react'
 
 export default async function DashboardPage() {
   const user = await currentUser()
@@ -16,6 +18,13 @@ export default async function DashboardPage() {
         <div className="rounded-xl border border-border bg-card p-6">
           <h2 className="font-semibold text-foreground">Workspaces</h2>
           <p className="mt-1 text-sm text-muted-foreground">Create and manage your knowledge spaces.</p>
+          <Link
+            href="/workspace-area"
+            className="mt-3 inline-flex items-center gap-1 text-sm text-foreground underline-offset-4 hover:underline"
+          >
+            Go to workspace area
+            <ArrowRightIcon className="size-3.5" />
+          </Link>
         </div>
         <div className="rounded-xl border border-border bg-card p-6">
           <h2 className="font-semibold text-foreground">Documents</h2>
